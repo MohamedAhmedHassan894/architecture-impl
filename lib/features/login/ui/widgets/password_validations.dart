@@ -51,7 +51,7 @@ class PasswordValidations extends StatelessWidget {
             decoration: hasValidated ? TextDecoration.lineThrough : null,
             decorationColor: Colors.green,
             decorationThickness: 2,
-            color: hasValidated ? ColorsManager.gray : ColorsManager.darkBlue,
+            color: hasValidated ? ColorsManager.gray : ColorsManager.darkGreen,
           ),
         )
       ],

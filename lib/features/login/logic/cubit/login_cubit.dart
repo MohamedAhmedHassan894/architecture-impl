@@ -14,7 +14,6 @@ class LoginCubit extends Cubit<LoginState> {
 
   emitLoginStates() async {
     emit(const LoginState.loading());
-    await Future.delayed(const Duration(seconds: 4));
     final response = await _loginRepository.login(LoginRequestBody(
       email: emailController.text,
       password: passwordController.text,

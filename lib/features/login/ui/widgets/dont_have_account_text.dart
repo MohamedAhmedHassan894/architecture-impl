@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theming/styles.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/helpers/extensions.dart';
+import '../../logic/cubit/login_cubit.dart';
 
 class DontHaveAccountText extends StatelessWidget {
   const DontHaveAccountText({super.key});
@@ -17,7 +19,6 @@ class DontHaveAccountText extends StatelessWidget {
             text: 'Don\'t have an account?',
             style: TextStyles.font13DarkBlueRegular,
           ),
-        
           TextSpan(
             text: ' Sign Up',
             style: TextStyles.font13BlueSemiBold,

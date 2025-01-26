@@ -5,7 +5,9 @@ import 'core/routing/routes.dart';
 import 'core/theming/colors.dart';
 
 class ImployApp extends StatelessWidget {
-  const ImployApp({super.key,});
+  const ImployApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class ImployApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Doc App',
           theme: ThemeData(
-            primaryColor: ColorsManager.mainBlue,
+            primaryColor: ColorsManager.mainGreen,
             scaffoldBackgroundColor: Colors.white,
           ),
           debugShowCheckedModeBanner: false,
