@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/helpers/constants.dart';
+import '../../../../core/helpers/shared_pref_helper.dart';
+import '../../../../core/networking/dio_factory.dart';
 import '../../data/models/login_request_body.dart';
 import '../../data/repositories/login_repository.dart';
 import 'login_state.dart';
@@ -20,13 +23,19 @@ class LoginCubit extends Cubit<LoginState> {
       authtype: 2,
     ));
     response.when(
-      success: (loginResponse) {
+      success: (loginResponse) async{
+        await saveUserToken(loginResponse.userData!.token);
         emit(LoginState.success(loginResponse));
       },
       failure: (error) {
         emit(LoginState.error(
-            message: error.apiErrorModel.message ?? "Something error happen!"));
+            error.apiErrorModel.message ?? "Something error happen!"));
       },
     );
+  }
+
+   Future<void> saveUserToken(String token) async {
+    await SharedPrefHelper.setSecuredString(SharedPrefKeys.userToken, token);
+    DioFactory.setTokenIntoHeaderAfterLogin(token);
   }
 }

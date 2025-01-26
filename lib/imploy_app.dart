@@ -1,3 +1,4 @@
+import 'package:architecture_impl/core/helpers/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/routing/app_router.dart';
@@ -15,13 +16,14 @@ class ImployApp extends StatelessWidget {
         designSize: const Size(375, 812),
         minTextAdapt: true,
         child: MaterialApp(
-          title: 'Doc App',
+          title: 'Imply App',
           theme: ThemeData(
             primaryColor: ColorsManager.mainGreen,
             scaffoldBackgroundColor: Colors.white,
           ),
           debugShowCheckedModeBanner: false,
-          initialRoute: false ? Routes.homeScreen : Routes.loginScreen,
+          initialRoute:
+              isLoggedInUser ? Routes.interviewsScreen : Routes.loginScreen,
           onGenerateRoute: AppRouter().generateRoute,
         ));
   }
