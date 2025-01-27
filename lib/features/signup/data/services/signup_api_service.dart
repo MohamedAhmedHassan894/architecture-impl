@@ -9,7 +9,7 @@ part 'signup_api_service.g.dart';
 
 @RestApi(baseUrl: ApiConstants.baseUrl)
 abstract class SignupApiService {
-  factory SignupApiService(Dio dio, {String baseUrl}) = _SignupApiService;
+  factory SignupApiService(Dio dio) = _SignupApiService;
 
   @POST(ApiConstants.signUp)
   Future<SignupResponse> signup(@Body() SignupRequestBody signupRequestBody);

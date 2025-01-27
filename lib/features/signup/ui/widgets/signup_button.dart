@@ -23,11 +23,11 @@ class SignupButton extends StatelessWidget {
               ),
             );
           },
-          error: (error) {
+          error: (apiErrorModel) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                   content: Text(
-                'Error signing up! $error',
+                'Error signing up! ${apiErrorModel.message}',
               )),
             );
           },

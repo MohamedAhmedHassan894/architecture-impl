@@ -1,6 +1,8 @@
 import 'package:architecture_impl/core/networking/dio_factory.dart';
 import 'package:architecture_impl/features/login/data/services/login_api_service.dart';
 import 'package:get_it/get_it.dart';
+import '../../features/interviews/data/repo/interviews_repository.dart';
+import '../../features/interviews/data/services/interviews_api_service.dart';
 import '../../features/login/data/repositories/login_repository.dart';
 import '../../features/login/logic/cubit/login_cubit.dart';
 import '../../features/signup/data/repositories/signup_repository.dart';
@@ -23,5 +25,8 @@ Future<void> init() async {
   getIt.registerLazySingleton<SignupApiService>(() => SignupApiService(dio));
   getIt.registerLazySingleton<SignupRepository>(() => SignupRepository(getIt()));
   getIt.registerFactory(() => SignupCubit(getIt()));
-  
+
+  // Interviews
+  getIt.registerLazySingleton<InterviewsApiService>(() => InterviewsApiService(dio));
+  getIt.registerLazySingleton<InterviewsRepository>(() => InterviewsRepository(getIt()));  
 }

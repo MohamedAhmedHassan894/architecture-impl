@@ -1,10 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../core/networking/api_error_model.dart';
+import '../../data/models/login_response.dart';
 part 'login_state.freezed.dart';
 
 @freezed
-class LoginState<T> with _$LoginState {
+class LoginState with _$LoginState {
   const factory LoginState.initial() = _Initial;
   const factory LoginState.loading() = Loading;
-  const factory LoginState.success(T data) = Success;
-  const factory LoginState.error({required String message}) = Error;
+  const factory LoginState.success(LoginResponse loginResponse) = Success;
+  const factory LoginState.error(ApiErrorModel apiErrorModel) = Error;
 }
