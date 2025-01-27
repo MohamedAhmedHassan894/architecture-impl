@@ -1,6 +1,7 @@
 import 'package:architecture_impl/core/helpers/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/networking/api_error_model.dart';
 import '../../../../core/routing/routes.dart';
 import '../../../../core/theming/colors.dart';
 import '../../../../core/theming/styles.dart';
@@ -31,8 +32,8 @@ class LoginBlocListener extends StatelessWidget {
             context.pop();
             context.pushNamed(Routes.interviewsScreen);
           },
-          error: (error) {
-            setupErrorState(context, error);
+          error: (apiErrorModel) {
+            setupErrorState(context, apiErrorModel);
           },
         );
       },
@@ -40,7 +41,7 @@ class LoginBlocListener extends StatelessWidget {
     );
   }
 
-  void setupErrorState(BuildContext context, String error) {
+  void setupErrorState(BuildContext context, ApiErrorModel apiErrorModel) {
     context.pop();
     showDialog(
       context: context,
@@ -51,7 +52,7 @@ class LoginBlocListener extends StatelessWidget {
           size: 32,
         ),
         content: Text(
-          error,
+          apiErrorModel.message,
           style: TextStyles.font15DarkBlueMedium,
         ),
         actions: [

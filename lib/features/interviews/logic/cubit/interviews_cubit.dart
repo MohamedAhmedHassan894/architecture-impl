@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../../core/networking/api_error_model.dart';
 import '../../data/models/interviews_request_body.dart';
 import '../../data/repo/interviews_repository.dart';
 import '../../data/models/interviews_response_model.dart';
@@ -20,8 +21,8 @@ class InterviewsCubit extends Cubit<InterviewsState> {
       success: (interviewsResponseModel) {
         emit(InterviewsState.success(interviewsResponseModel));
       },
-      failure: (error) {
-        emit(InterviewsState.error(error.apiErrorModel.message ?? ""));
+      failure: (apiErrorModel) {
+        emit(InterviewsState.error(apiErrorModel));
       },
     );
   }

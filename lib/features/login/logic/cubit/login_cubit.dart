@@ -23,18 +23,17 @@ class LoginCubit extends Cubit<LoginState> {
       authtype: 2,
     ));
     response.when(
-      success: (loginResponse) async{
+      success: (loginResponse) async {
         await saveUserToken(loginResponse.userData!.token);
         emit(LoginState.success(loginResponse));
       },
-      failure: (error) {
-        emit(LoginState.error(
-            error.apiErrorModel.message ?? "Something error happen!"));
+      failure: (apiErrorModel) {
+        emit(LoginState.error(apiErrorModel));
       },
     );
   }
 
-   Future<void> saveUserToken(String token) async {
+  Future<void> saveUserToken(String token) async {
     await SharedPrefHelper.setSecuredString(SharedPrefKeys.userToken, token);
     DioFactory.setTokenIntoHeaderAfterLogin(token);
   }

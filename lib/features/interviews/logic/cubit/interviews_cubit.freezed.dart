@@ -22,7 +22,7 @@ mixin _$InterviewsState {
     required TResult Function() loading,
     required TResult Function(InterviewsResponseModel interviewsResponseModel)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(ApiErrorModel apiErrorModel) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,7 +30,7 @@ mixin _$InterviewsState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,7 +38,7 @@ mixin _$InterviewsState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult Function(String message)? error,
+    TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -129,7 +129,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() loading,
     required TResult Function(InterviewsResponseModel interviewsResponseModel)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(ApiErrorModel apiErrorModel) error,
   }) {
     return initial();
   }
@@ -140,7 +140,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) {
     return initial?.call();
   }
@@ -151,7 +151,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult Function(String message)? error,
+    TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -244,7 +244,7 @@ class _$LoadingImpl implements Loading {
     required TResult Function() loading,
     required TResult Function(InterviewsResponseModel interviewsResponseModel)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(ApiErrorModel apiErrorModel) error,
   }) {
     return loading();
   }
@@ -255,7 +255,7 @@ class _$LoadingImpl implements Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) {
     return loading?.call();
   }
@@ -266,7 +266,7 @@ class _$LoadingImpl implements Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult Function(String message)? error,
+    TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -387,7 +387,7 @@ class _$SuccessImpl implements Success {
     required TResult Function() loading,
     required TResult Function(InterviewsResponseModel interviewsResponseModel)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(ApiErrorModel apiErrorModel) error,
   }) {
     return success(interviewsResponseModel);
   }
@@ -398,7 +398,7 @@ class _$SuccessImpl implements Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) {
     return success?.call(interviewsResponseModel);
   }
@@ -409,7 +409,7 @@ class _$SuccessImpl implements Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult Function(String message)? error,
+    TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -472,7 +472,7 @@ abstract class _$$ErrorImplCopyWith<$Res> {
           _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
       __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({ApiErrorModel apiErrorModel});
 }
 
 /// @nodoc
@@ -486,13 +486,13 @@ class __$$ErrorImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? apiErrorModel = null,
   }) {
     return _then(_$ErrorImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == apiErrorModel
+          ? _value.apiErrorModel
+          : apiErrorModel // ignore: cast_nullable_to_non_nullable
+              as ApiErrorModel,
     ));
   }
 }
@@ -500,14 +500,14 @@ class __$$ErrorImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ErrorImpl implements Error {
-  const _$ErrorImpl(this.message);
+  const _$ErrorImpl(this.apiErrorModel);
 
   @override
-  final String message;
+  final ApiErrorModel apiErrorModel;
 
   @override
   String toString() {
-    return 'InterviewsState.error(message: $message)';
+    return 'InterviewsState.error(apiErrorModel: $apiErrorModel)';
   }
 
   @override
@@ -515,11 +515,12 @@ class _$ErrorImpl implements Error {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ErrorImpl &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.apiErrorModel, apiErrorModel) ||
+                other.apiErrorModel == apiErrorModel));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(runtimeType, apiErrorModel);
 
   @JsonKey(ignore: true)
   @override
@@ -534,9 +535,9 @@ class _$ErrorImpl implements Error {
     required TResult Function() loading,
     required TResult Function(InterviewsResponseModel interviewsResponseModel)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(ApiErrorModel apiErrorModel) error,
   }) {
-    return error(message);
+    return error(apiErrorModel);
   }
 
   @override
@@ -545,9 +546,9 @@ class _$ErrorImpl implements Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) {
-    return error?.call(message);
+    return error?.call(apiErrorModel);
   }
 
   @override
@@ -556,11 +557,11 @@ class _$ErrorImpl implements Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
-    TResult Function(String message)? error,
+    TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(apiErrorModel);
     }
     return orElse();
   }
@@ -604,9 +605,9 @@ class _$ErrorImpl implements Error {
 }
 
 abstract class Error implements InterviewsState {
-  const factory Error(final String message) = _$ErrorImpl;
+  const factory Error(final ApiErrorModel apiErrorModel) = _$ErrorImpl;
 
-  String get message;
+  ApiErrorModel get apiErrorModel;
   @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;

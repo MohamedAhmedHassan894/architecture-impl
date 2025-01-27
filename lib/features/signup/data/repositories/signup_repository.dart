@@ -1,6 +1,6 @@
+import '../../../../core/networking/api_error_handler.dart';
 import '../../../../core/networking/api_result.dart';
 import '../models/signup_response.dart';
-import '../../../../core/networking/api_error_handler.dart';
 import '../models/signup_request_body.dart';
 import '../services/signup_api_service.dart';
 
@@ -15,7 +15,7 @@ class SignupRepository {
       final response = await _signupApiService.signup(signupRequestBody);
       return ApiResult.success(response);
     } catch (e) {
-      return ApiResult.failure(ErrorHandler.handle(e));
+      return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
 }

@@ -5,5 +5,5 @@ class InterviewsState with _$InterviewsState {
   const factory InterviewsState.initial() = _Initial;
   const factory InterviewsState.loading() = Loading;
   const factory InterviewsState.success(InterviewsResponseModel interviewsResponseModel) = Success;
-  const factory InterviewsState.error(String message) = Error;
+  const factory InterviewsState.error(ApiErrorModel apiErrorModel) = Error;
 }

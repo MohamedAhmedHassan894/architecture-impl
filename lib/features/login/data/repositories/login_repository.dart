@@ -15,7 +15,7 @@ class LoginRepository {
       final response = await _loginApiService.login(loginRequest);
       return ApiResult.success(response);
     } catch (e) {
-      return ApiResult.failure(ErrorHandler.handle(e));
+      return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }
 }

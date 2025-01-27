@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../../../core/networking/api_error_model.dart';
 import '../../data/models/signup_response.dart';
 import '../../data/models/signup_request_body.dart';
 import '../../data/repositories/signup_repository.dart';
@@ -29,8 +30,8 @@ class SignupCubit extends Cubit<SignupState> {
       success: (signupResponse) {
         emit(SignupState.success(signupResponse));
       },
-      failure: (error) {
-        emit(SignupState.error(message: error.apiErrorModel.message ?? ""));
+      failure: (apiErrorModel) {
+        emit(SignupState.error(apiErrorModel));
       },
     );
   }
