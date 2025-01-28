@@ -11,13 +11,13 @@ class ApiErrorHandler {
           return ApiErrorModel(message: "Request to the server was cancelled");
         case DioExceptionType.connectionTimeout:
           return ApiErrorModel(message: "Connection timeout with the server");
+          case DioExceptionType.receiveTimeout:
+          return ApiErrorModel(
+              message: "Receive timeout in connection with the server");
         case DioExceptionType.unknown:
           return ApiErrorModel(
               message:
                   "Connection to the server failed due to internet connection");
-        case DioExceptionType.receiveTimeout:
-          return ApiErrorModel(
-              message: "Receive timeout in connection with the server");
         case DioExceptionType.badResponse:
           return _handleError(error.response?.data);
         case DioExceptionType.sendTimeout:

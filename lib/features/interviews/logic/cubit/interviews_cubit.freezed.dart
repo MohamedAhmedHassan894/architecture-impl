@@ -20,8 +20,7 @@ mixin _$InterviewsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(InterviewsResponseModel interviewsResponseModel)
-        success,
+    required TResult Function(List<Interview?> interviewsList) success,
     required TResult Function(ApiErrorModel apiErrorModel) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,7 +28,7 @@ mixin _$InterviewsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult? Function(List<Interview?> interviewsList)? success,
     TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,7 +36,7 @@ mixin _$InterviewsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult Function(List<Interview?> interviewsList)? success,
     TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) =>
@@ -127,8 +126,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(InterviewsResponseModel interviewsResponseModel)
-        success,
+    required TResult Function(List<Interview?> interviewsList) success,
     required TResult Function(ApiErrorModel apiErrorModel) error,
   }) {
     return initial();
@@ -139,7 +137,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult? Function(List<Interview?> interviewsList)? success,
     TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) {
     return initial?.call();
@@ -150,7 +148,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult Function(List<Interview?> interviewsList)? success,
     TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) {
@@ -242,8 +240,7 @@ class _$LoadingImpl implements Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(InterviewsResponseModel interviewsResponseModel)
-        success,
+    required TResult Function(List<Interview?> interviewsList) success,
     required TResult Function(ApiErrorModel apiErrorModel) error,
   }) {
     return loading();
@@ -254,7 +251,7 @@ class _$LoadingImpl implements Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult? Function(List<Interview?> interviewsList)? success,
     TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) {
     return loading?.call();
@@ -265,7 +262,7 @@ class _$LoadingImpl implements Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult Function(List<Interview?> interviewsList)? success,
     TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) {
@@ -323,7 +320,7 @@ abstract class _$$SuccessImplCopyWith<$Res> {
           _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
       __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({InterviewsResponseModel interviewsResponseModel});
+  $Res call({List<Interview?> interviewsList});
 }
 
 /// @nodoc
@@ -337,13 +334,13 @@ class __$$SuccessImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? interviewsResponseModel = null,
+    Object? interviewsList = null,
   }) {
     return _then(_$SuccessImpl(
-      null == interviewsResponseModel
-          ? _value.interviewsResponseModel
-          : interviewsResponseModel // ignore: cast_nullable_to_non_nullable
-              as InterviewsResponseModel,
+      null == interviewsList
+          ? _value._interviewsList
+          : interviewsList // ignore: cast_nullable_to_non_nullable
+              as List<Interview?>,
     ));
   }
 }
@@ -351,14 +348,20 @@ class __$$SuccessImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SuccessImpl implements Success {
-  const _$SuccessImpl(this.interviewsResponseModel);
+  const _$SuccessImpl(final List<Interview?> interviewsList)
+      : _interviewsList = interviewsList;
 
+  final List<Interview?> _interviewsList;
   @override
-  final InterviewsResponseModel interviewsResponseModel;
+  List<Interview?> get interviewsList {
+    if (_interviewsList is EqualUnmodifiableListView) return _interviewsList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_interviewsList);
+  }
 
   @override
   String toString() {
-    return 'InterviewsState.success(interviewsResponseModel: $interviewsResponseModel)';
+    return 'InterviewsState.success(interviewsList: $interviewsList)';
   }
 
   @override
@@ -366,13 +369,13 @@ class _$SuccessImpl implements Success {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessImpl &&
-            (identical(
-                    other.interviewsResponseModel, interviewsResponseModel) ||
-                other.interviewsResponseModel == interviewsResponseModel));
+            const DeepCollectionEquality()
+                .equals(other._interviewsList, _interviewsList));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, interviewsResponseModel);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_interviewsList));
 
   @JsonKey(ignore: true)
   @override
@@ -385,11 +388,10 @@ class _$SuccessImpl implements Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(InterviewsResponseModel interviewsResponseModel)
-        success,
+    required TResult Function(List<Interview?> interviewsList) success,
     required TResult Function(ApiErrorModel apiErrorModel) error,
   }) {
-    return success(interviewsResponseModel);
+    return success(interviewsList);
   }
 
   @override
@@ -397,10 +399,10 @@ class _$SuccessImpl implements Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult? Function(List<Interview?> interviewsList)? success,
     TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) {
-    return success?.call(interviewsResponseModel);
+    return success?.call(interviewsList);
   }
 
   @override
@@ -408,12 +410,12 @@ class _$SuccessImpl implements Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult Function(List<Interview?> interviewsList)? success,
     TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(interviewsResponseModel);
+      return success(interviewsList);
     }
     return orElse();
   }
@@ -457,10 +459,9 @@ class _$SuccessImpl implements Success {
 }
 
 abstract class Success implements InterviewsState {
-  const factory Success(final InterviewsResponseModel interviewsResponseModel) =
-      _$SuccessImpl;
+  const factory Success(final List<Interview?> interviewsList) = _$SuccessImpl;
 
-  InterviewsResponseModel get interviewsResponseModel;
+  List<Interview?> get interviewsList;
   @JsonKey(ignore: true)
   _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -533,8 +534,7 @@ class _$ErrorImpl implements Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(InterviewsResponseModel interviewsResponseModel)
-        success,
+    required TResult Function(List<Interview?> interviewsList) success,
     required TResult Function(ApiErrorModel apiErrorModel) error,
   }) {
     return error(apiErrorModel);
@@ -545,7 +545,7 @@ class _$ErrorImpl implements Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult? Function(List<Interview?> interviewsList)? success,
     TResult? Function(ApiErrorModel apiErrorModel)? error,
   }) {
     return error?.call(apiErrorModel);
@@ -556,7 +556,7 @@ class _$ErrorImpl implements Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(InterviewsResponseModel interviewsResponseModel)? success,
+    TResult Function(List<Interview?> interviewsList)? success,
     TResult Function(ApiErrorModel apiErrorModel)? error,
     required TResult orElse(),
   }) {
