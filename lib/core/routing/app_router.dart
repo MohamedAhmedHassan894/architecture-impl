@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../features/interviews/logic/cubit/interviews_cubit.dart';
+import '../../features/interviews/ui/interviews_screen.dart';
+import '../../features/signup/logic/cubit/signup_cubit.dart';
+import '../../features/signup/ui/signup_screen.dart';
 import '../di/injection_container.dart';
-import 'routes.dart';
 import '../../features/login/logic/cubit/login_cubit.dart';
-import '../../features/home/ui/screens/home_screen.dart';
 import '../../features/login/ui/login_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
+import 'routes.dart';
 
 class AppRouter {
-  Route generateRoute(RouteSettings settings) {
+  Route? generateRoute(RouteSettings settings) {
     //this arguments to be passed in any screen like this ( arguments as ClassName )
     final arguments = settings.arguments;
 
@@ -25,18 +28,23 @@ class AppRouter {
             child: const LoginScreen(),
           ),
         );
-      case Routes.homeScreen:
+      case Routes.signUpScreen:
         return MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
-        );
-      default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
+          builder: (_) => BlocProvider(
+            create: (context) => getIt<SignupCubit>(),
+            child: SignupScreen(),
           ),
         );
+      case Routes.interviewsScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                InterviewsCubit(getIt())..getRecruiterInterviews(),
+            child: const InterviewsScreen(),
+          ),
+        );
+      default:
+        return null;
     }
   }
 }

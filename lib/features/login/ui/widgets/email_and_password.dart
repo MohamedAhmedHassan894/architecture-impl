@@ -1,4 +1,3 @@
-import 'package:architecture_impl/core/di/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/helpers/app_regex.dart';
@@ -26,8 +25,6 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
   @override
   void initState() {
     super.initState();
-    context.read<LoginCubit>().emailController.text = 'Hisham.nashaat@watanfd.com';
-    context.read<LoginCubit>().passwordController.text = 'Hisham@123';
     setupPasswordControllerListener();
   }
 

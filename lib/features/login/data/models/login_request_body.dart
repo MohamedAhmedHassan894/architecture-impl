@@ -8,9 +8,9 @@ class LoginRequestBody {
     required this.password,
     required this.authtype,
   });
-  String email;
-  String password;
-  int authtype;
+  final String email;
+  final String password;
+  final int authtype;
 
   Map<String, dynamic> toJson() => _$LoginRequestBodyToJson(this);
 }

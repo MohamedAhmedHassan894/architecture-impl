@@ -5,7 +5,7 @@ part 'api_error_model.g.dart';
 class ApiErrorModel {
   ApiErrorModel({this.statusCode, required this.message});
   int? statusCode;
-  String? message;
+  String message;
 
   factory ApiErrorModel.fromJson(Map<String, dynamic> json) => _$ApiErrorModelFromJson(json);
 } 

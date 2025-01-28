@@ -1,6 +1,9 @@
 class ApiConstants {
   static const String baseUrl = "https://imployapidev.domnex.com/api/v1/";
   static const String login = "Account/Login";
+  static const String signUp = "Account/RecRegister";
+  static const String getRecruiterInterviews = "Interview/GetRecruiterInterviews";
+
 }
 
 class ApiErrors {
