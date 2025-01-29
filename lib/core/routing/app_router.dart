@@ -36,10 +36,11 @@ class AppRouter {
           ),
         );
       case Routes.interviewsScreen:
+        final d = InterviewsCubit(getIt()); ;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) =>
-                InterviewsCubit(getIt())..getRecruiterInterviews(),
+                d..getRecruiterInterviews(),
             child: const InterviewsScreen(),
           ),
         );
