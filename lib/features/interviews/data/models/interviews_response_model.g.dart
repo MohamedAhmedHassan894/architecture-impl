@@ -26,8 +26,9 @@ Data _$DataFromJson(Map<String, dynamic> json) => Data(
       keyWord: json['keyWord'],
       page: (json['page'] as num).toInt(),
       size: (json['size'] as num).toInt(),
-      interviews: (json['interviews'] as List<dynamic>)
-          .map((e) => Interview.fromJson(e as Map<String, dynamic>))
+      interviews: (json['interviews'] as List<dynamic>?)
+          ?.map((e) =>
+              e == null ? null : Interview.fromJson(e as Map<String, dynamic>))
           .toList(),
       count: (json['count'] as num).toInt(),
       status: (json['status'] as num).toInt(),

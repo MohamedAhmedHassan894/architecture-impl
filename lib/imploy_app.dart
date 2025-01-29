@@ -23,7 +23,7 @@ class ImployApp extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
           initialRoute:
-              isLoggedInUser ? Routes.interviewsScreen : Routes.loginScreen,
+              false ? Routes.interviewsScreen : Routes.loginScreen,
           onGenerateRoute: AppRouter().generateRoute,
         ));
   }

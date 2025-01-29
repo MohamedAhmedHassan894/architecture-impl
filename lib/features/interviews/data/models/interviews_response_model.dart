@@ -34,7 +34,7 @@ class Data {
   final dynamic keyWord;
   final int page;
   final int size;
-  final List<Interview> interviews;
+  final List<Interview?>? interviews;
   final int count;
   final int status;
   final int? jobId;

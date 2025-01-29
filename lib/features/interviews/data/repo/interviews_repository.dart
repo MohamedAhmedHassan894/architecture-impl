@@ -15,7 +15,8 @@ class InterviewsRepository {
       final response = await _interviewsApiService
           .getRecruiterInterviews(interviewsRequestBody);
       return ApiResult.success(response);
-    } catch (e) {
+    } catch(e,j) {
+      print(e);
       return ApiResult.failure(ApiErrorHandler.handle(e));
     }
   }

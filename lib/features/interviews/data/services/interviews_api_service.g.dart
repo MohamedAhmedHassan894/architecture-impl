@@ -14,7 +14,7 @@ class _InterviewsApiService implements InterviewsApiService {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://imployapidev.domnex.com/api/v1/';
+    baseUrl ??= 'https://imployapitest.domnex.com/api/v1/';
   }
 
   final Dio _dio;
