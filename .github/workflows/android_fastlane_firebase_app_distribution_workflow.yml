@@ -20,9 +20,18 @@ jobs:
 
       - name: Install Flutter using FVM
         run: |
-          # Use the locally installed FVM in the project
-          ./fvm/flutter_sdk/bin/flutter --version
+          # Verify the .fvm directory structure
+          echo "Checking .fvm directory..."
+          ls -la .fvm
+          ls -la .fvm/flutter_sdk/bin
+
+          # Add the Flutter SDK path to the PATH
+          echo "Adding Flutter SDK to PATH..."
           echo "$(pwd)/.fvm/flutter_sdk/bin" >> $GITHUB_PATH
+
+          # Verify Flutter installation
+          echo "Checking Flutter version..."
+          flutter --version
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
