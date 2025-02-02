@@ -18,20 +18,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Flutter using FVM
-        run: |
-          # Verify the .fvm directory structure
-          echo "Checking .fvm directory..."
-          ls -la .fvm
-          ls -la .fvm/flutter_sdk/bin
+      - name: Setup Flutter Version Management CLI
+        uses: flutter-actions/setup-fvm@v1
 
-          # Add the Flutter SDK path to the PATH
-          echo "Adding Flutter SDK to PATH..."
-          echo "$(pwd)/.fvm/flutter_sdk/bin" >> $GITHUB_PATH
+      - name: Install Flutter SDK
+        run: echo yes | fvm use stable
 
-          # Verify Flutter installation
-          echo "Checking Flutter version..."
-          flutter --version
+      - name: Print Flutter SDK version
+        run: fvm flutter --version
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
