@@ -13,7 +13,8 @@ platform :android do
     sh "fvm flutter build apk --release"
     firebase_app_distribution(
       app: "1:19992269668:android:d0423610bf518b330ae071",
-      firebase_cli_token: "1//036bOCmVCDMATCgYIARAAGAMSNwF-L9IrXTasR7B6DtY0lyjGrAkjvBeGeB891DtDPl9KLjQcXxxsJX_SL_VgPvkB3RSxu9V_ksw",
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      android_artifact_type: "APK",
       android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk",
       testers: "mohamed.hassaan@watanfd.com",
       release_notes: "Test Fastlane",
