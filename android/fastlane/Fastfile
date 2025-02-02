@@ -17,7 +17,6 @@ platform :android do
       android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk",
       testers: "mohamed.hassaan@watanfd.com",
       release_notes: "Test Fastlane",
-      upload_timeout: 2000
     )
   end
 end
