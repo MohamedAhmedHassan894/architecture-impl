@@ -5,9 +5,6 @@ platform :android do
   lane :beta do
     gradle(task: "clean assembleRelease")
     crashlytics
-
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
   end
 
   desc "Distribute a new build to Firebase App Distribution"
