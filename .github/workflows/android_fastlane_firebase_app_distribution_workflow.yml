@@ -18,11 +18,21 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Flutter using FVM
+      - name: Setup Flutter Version Management CLI
+        uses: flutter-actions/setup-fvm@v1
+
+      - name: Install Flutter SDK (Project Version)
         run: |
-          # Use the locally installed FVM in the project
-          ./fvm/flutter_sdk/bin/flutter --version
-          echo "$(pwd)/.fvm/flutter_sdk/bin" >> $GITHUB_PATH
+          # Read the Flutter version from .fvm/fvm_config.json
+          FLUTTER_VERSION=$(cat .fvm/fvm_config.json | grep flutterSdkVersion | cut -d '"' -f 4)
+          echo "Using Flutter version: $FLUTTER_VERSION"
+
+          # Install the Flutter version specified in the project
+          fvm install $FLUTTER_VERSION
+          fvm use $FLUTTER_VERSION --force
+
+      - name: Print Flutter SDK version
+        run: fvm flutter --version
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
