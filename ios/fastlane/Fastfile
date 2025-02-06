@@ -1,0 +1,13 @@
+# Fastlane configuration for iOS deployment
+
+default_platform(:ios)
+
+platform :ios do
+  # This lane distributes a new build to Firebase App Distribution
+  desc "Build and distribute a new Beta build to TestFlight"
+  lane :testflight_distribution do
+    increment_build_number(xcodeproj: "Runner.xcodeproj")
+    build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
+    upload_to_testflight
+  end
+end
