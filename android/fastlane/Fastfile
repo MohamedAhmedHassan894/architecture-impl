@@ -4,7 +4,6 @@ default_platform(:android)
 
 platform :android do
 
-  # This lane distributes a new build to Firebase App Distribution
   desc "Build and distribute a new Beta build to Firebase App Distribution"
   lane :firebase_distribution do
 
