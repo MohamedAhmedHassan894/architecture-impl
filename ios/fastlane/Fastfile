@@ -1,0 +1,29 @@
+# Fastlane configuration for IOS deployment
+
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Build and distribute a new Beta build to TestFlight"
+  lane :testflight_distribution do
+
+    # Step 1: Increment build number (optional)
+    increment_build_number(
+      build_number: latest_testflight_build_number + 1
+    )
+
+   # Step 2: Build the Flutter iOS app (we need before reaching to this point to install cocoapods in the CI provider to run pod install)
+    build_app(
+      workspace: "Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store"
+    )
+
+    # Step 3: Upload to TestFlight using App-Specific Password
+    upload_to_testflight(
+      skip_waiting_for_build_processing: false, # Set to false if you want to wait for processing
+      changelog: "Beta release for testing",   # Add your release notes here
+      distribute_external: false               # Set to true if you want to distribute to external testers
+        )
+  end
+end

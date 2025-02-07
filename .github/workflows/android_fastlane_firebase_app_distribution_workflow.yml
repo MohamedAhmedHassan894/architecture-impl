@@ -11,14 +11,15 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
+      # This step checks out the repository code so the workflow can access it
 
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'temurin'
+          distribution: 'temurin' # Uses the Temurin distribution of Java, which is widely used
 
-      - name: Setup Flutter Version Management CLI
+      - name: Setup Flutter Version Management CLI (FVM)
         uses: flutter-actions/setup-fvm@v1
 
       - name: Install Flutter SDK (Project Version)
@@ -30,6 +31,7 @@ jobs:
           # Install the Flutter version specified in the project
           fvm install $FLUTTER_VERSION
           fvm use $FLUTTER_VERSION --force
+      # Ensures that the project uses the correct Flutter SDK version specified in the configuration file
 
       - name: Print Flutter SDK version
         run: fvm flutter --version
@@ -37,7 +39,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.3"
+          ruby-version: "3.3.4"
           bundler-cache: true
           working-directory: android
 
@@ -46,4 +48,5 @@ jobs:
           FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
         run: |
           bundle exec fastlane android firebase_distribution
-        working-directory: android
+        working-directory: android # Executes Fastlane within the Android project directory
+        # Runs the Fastlane command to build the Android app and distribute it via Firebase
