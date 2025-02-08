@@ -45,10 +45,10 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-*.gem
-Gemfile.lock
-
 # Ignore all .env files
 .env
 .env.*
 !.env.example
+
+android/Gemfile.lock
+ios/Gemfile.lock
