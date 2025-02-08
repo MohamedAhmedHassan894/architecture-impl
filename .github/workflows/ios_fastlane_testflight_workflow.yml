@@ -41,6 +41,7 @@ jobs:
 
       - name: Install CocoaPods dependencies
         run: |
+          fvm flutter precache --ios
           cd ios
           pod install
 
