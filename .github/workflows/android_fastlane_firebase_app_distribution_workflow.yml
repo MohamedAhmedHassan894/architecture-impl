@@ -43,6 +43,14 @@ jobs:
           bundler-cache: true
           working-directory: android
 
+      # Set Environment Variables from github secrets that used in FastFile as Locally it's setted from Terminal Session    
+      - name: Set Environment Variables
+        run: |
+          echo "FASTLANE_USER=${{ secrets.FASTLANE_USER }}" >> $GITHUB_ENV
+          echo "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}" >> $GITHUB_ENV
+          
+          
+
       - name: Build and Distribute App
         env:
           FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
