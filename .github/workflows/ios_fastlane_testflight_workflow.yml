@@ -12,6 +12,19 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
 
+      - name: Set up SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Test SSH Connection
+        run: ssh -T git@github.com
+
+      - name: Clone Another Private Repository (Example)
+        run: git clone git@github.com:MohamedAhmedHassan894/fastlane.git
+        
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
