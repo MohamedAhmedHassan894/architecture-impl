@@ -20,10 +20,6 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_ed25519
-
-      - name: Clone Another Private Repository (Example)
-        run:  |
-           git clone git@github.com:MohamedAhmedHassan894/fastlane.git
         
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
