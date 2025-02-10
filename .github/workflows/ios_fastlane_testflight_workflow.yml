@@ -25,7 +25,9 @@ jobs:
         run: ssh -T git@github.com
 
       - name: Clone Another Private Repository (Example)
-        run: git clone git@github.com:MohamedAhmedHassan894/fastlane.git
+        run:  |
+           GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" git clone git@github.com:MohamedAhmedHassan894/fastlane.git
+           git clone git@github.com:MohamedAhmedHassan894/fastlane.git
         
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
