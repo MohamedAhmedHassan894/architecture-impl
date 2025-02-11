@@ -26,6 +26,20 @@ jobs:
           echo "MATCH_GIT_BASIC_AUTHORIZATION: $MATCH_GIT_BASIC_AUTHORIZATION" 
           git clone https://$MATCH_GIT_BASIC_AUTHORIZATION@github.com/MohamedAhmedHassan894/fastlane.git
           ls -la fastlane
+
+      - name: Set up Keychain
+        run: |
+          KEYCHAIN_NAME="build.keychain"
+          KEYCHAIN_PASSWORD="${{ secrets.KEYCHAIN_PASSWORD }}"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
+          security list-keychains -s "$KEYCHAIN_NAME"
+          security default-keychain -s "$KEYCHAIN_NAME"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
+          security set-keychain-settings -t 3600 -u "$KEYCHAIN_NAME"
+
+          echo "Keychain setup complete."
+
           
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -75,6 +89,7 @@ jobs:
 
       - name: Build and Distribute App to TestFlight
         env:
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
