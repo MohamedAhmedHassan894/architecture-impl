@@ -60,8 +60,6 @@ jobs:
 
       - name: Build and Distribute App to TestFlight
         uses: maierj/fastlane-action@v1.4.0
-        with:
-          lane: bundle exec fastlane ios testflight_distribution
         env:
           DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
@@ -112,6 +110,8 @@ jobs:
           echo "ITC_TEAM_ID=${ITC_TEAM_ID}"
           echo "TEAM_ID=${TEAM_ID}"
           shell: bash
+          with:
+          lane: bundle exec fastlane ios testflight_distribution
  
 
           
