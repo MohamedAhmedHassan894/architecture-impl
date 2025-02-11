@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - development
+    pull_request:
+      - development
 
 jobs:
   distribute_to_testflight:
@@ -12,35 +14,6 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v2
 
-      - name: Set up SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_ed25519
-
-      - name: Debug Match Repository Access
-        run: |
-          echo "MATCH_GIT_BASIC_AUTHORIZATION: $MATCH_GIT_BASIC_AUTHORIZATION" 
-          git clone https://$MATCH_GIT_BASIC_AUTHORIZATION@github.com/MohamedAhmedHassan894/fastlane.git
-          ls -la fastlane
-
-      - name: Set up Keychain
-        run: |
-         
-          KEYCHAIN_PASSWORD="${{ secrets.KEYCHAIN_PASSWORD }}"
-
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-          security list-keychains -s "$KEYCHAIN_NAME"
-          security default-keychain -s "$KEYCHAIN_NAME"
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-          security set-keychain-settings -t 3600 -u "$KEYCHAIN_NAME"
-
-          echo "Keychain setup complete."
-
-          
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -84,14 +57,6 @@ jobs:
         run: |
           cd ios
           bundle install
-          
-      - name: Debug Environment Variables
-        run: |
-          echo "FASTLANE_USER: $FASTLANE_USER"
-          echo "FASTLANE_PASSWORD: $FASTLANE_PASSWORD"
-          echo "FASTLANE_SESSION: $FASTLANE_SESSION"
-          echo "ITC_TEAM_ID: $ITC_TEAM_ID"
-          echo "TEAM_ID: $TEAM_ID"
 
       - name: Build and Distribute App to TestFlight
         uses: maierj/fastlane-action@v1.4.0
@@ -128,4 +93,3 @@ jobs:
          path: |
            ${{ github.workspace }}/example.ipa
            ${{ github.workspace }}/*example.app.dSYM.zip
-
