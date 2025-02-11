@@ -8,7 +8,7 @@ platform :ios do
   lane :testflight_distribution do
 
     # Step 1: Match AppStore through repository contains all certificates and provisioning profiles needed to build and sign the app
-    match(type: "appstore", app_identifier: "com.example.architectureImpl")
+    match(type: "appstore", app_identifier: "com.example.architectureImpl",readonly: true)
     
     # Step 2: Increment build number (optional)
     increment_build_number(
