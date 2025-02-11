@@ -57,21 +57,6 @@ jobs:
         run: |
           cd ios
           bundle install
-          
-      - name: Echo environment variables
-        run: |
-          echo "DEVELOPER_APP_ID=${DEVELOPER_APP_ID}"
-          echo "DEVELOPER_APP_IDENTIFIER=${DEVELOPER_APP_IDENTIFIER}"
-          echo "MATCH_PASSWORD=${MATCH_PASSWORD}"
-          echo "PROVISIONING_PROFILE_SPECIFIER=${PROVISIONING_PROFILE_SPECIFIER}"
-          echo "TEMP_KEYCHAIN_USER=${TEMP_KEYCHAIN_USER}"
-          echo "TEMP_KEYCHAIN_PASSWORD=${TEMP_KEYCHAIN_PASSWORD}"
-          echo "APPLE_ISSUER_ID=${APPLE_ISSUER_ID}"
-          echo "APPLE_KEY_ID=${APPLE_KEY_ID}"
-          echo "APPLE_KEY_CONTENT=${APPLE_KEY_CONTENT}"
-          echo "MATCH_GIT_BASIC_AUTHORIZATION=${MATCH_GIT_BASIC_AUTHORIZATION}"
-          echo "PROVISIONING_PROFILE_ID=${PROVISIONING_PROFILE_ID}"
-        shell: bash
 
       - name: Build and Distribute App to TestFlight
         uses: maierj/fastlane-action@v1.4.0
@@ -100,6 +85,35 @@ jobs:
           FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
           ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
           TEAM_ID: ${{ secrets.TEAM_ID }}
+
+                
+      - name: Echo environment variables
+        run: |
+          echo "DEVELOPER_APP_ID=${DEVELOPER_APP_ID}"
+          echo "DEVELOPER_APP_IDENTIFIER=${DEVELOPER_APP_IDENTIFIER}"
+          echo "DEVELOPER_PORTAL_TEAM_ID=${DEVELOPER_PORTAL_TEAM_ID}"
+          echo "FASTLANE_APPLE_ID=${FASTLANE_APPLE_ID}"
+          echo "FASTLANE_ITC_TEAM_ID=${FASTLANE_ITC_TEAM_ID}"
+          echo "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=******"
+          echo "MATCH_PASSWORD=******"
+          echo "MATCH_GIT_BASIC_AUTHORIZATION=******"
+          echo "PROVISIONING_PROFILE_SPECIFIER=${PROVISIONING_PROFILE_SPECIFIER}"
+          echo "PROVISIONING_PROFILE_ID=${PROVISIONING_PROFILE_ID}"
+          echo "TEMP_KEYCHAIN_PASSWORD=******"
+          echo "TEMP_KEYCHAIN_USER=${TEMP_KEYCHAIN_USER}"
+          echo "ASC_KEY_ID=${ASC_KEY_ID}"
+          echo "ASC_ISSUER_ID=${ASC_ISSUER_ID}"
+          echo "ASC_KEY=******"
+          echo "SIGNING_KEY_PASSWORD=******"
+          echo "SIGNING_KEY_FILE_PATH=${SIGNING_KEY_FILE_PATH}"
+          echo "FASTLANE_USER=${FASTLANE_USER}"
+          echo "FASTLANE_PASSWORD=******"
+          echo "FASTLANE_SESSION=******"
+          echo "ITC_TEAM_ID=${ITC_TEAM_ID}"
+          echo "TEAM_ID=${TEAM_ID}"
+          shell: bash
+ 
+
           
       - name: Upload app-store ipa and dsyms to artifacts
         uses: actions/upload-artifact@v4
