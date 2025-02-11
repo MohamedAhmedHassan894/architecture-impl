@@ -57,6 +57,21 @@ jobs:
         run: |
           cd ios
           bundle install
+          
+      - name: Echo environment variables
+        run: |
+          echo "DEVELOPER_APP_ID=${DEVELOPER_APP_ID}"
+          echo "DEVELOPER_APP_IDENTIFIER=${DEVELOPER_APP_IDENTIFIER}"
+          echo "MATCH_PASSWORD=${MATCH_PASSWORD}"
+          echo "PROVISIONING_PROFILE_SPECIFIER=${PROVISIONING_PROFILE_SPECIFIER}"
+          echo "TEMP_KEYCHAIN_USER=${TEMP_KEYCHAIN_USER}"
+          echo "TEMP_KEYCHAIN_PASSWORD=${TEMP_KEYCHAIN_PASSWORD}"
+          echo "APPLE_ISSUER_ID=${APPLE_ISSUER_ID}"
+          echo "APPLE_KEY_ID=${APPLE_KEY_ID}"
+          echo "APPLE_KEY_CONTENT=${APPLE_KEY_CONTENT}"
+          echo "MATCH_GIT_BASIC_AUTHORIZATION=${MATCH_GIT_BASIC_AUTHORIZATION}"
+          echo "PROVISIONING_PROFILE_ID=${PROVISIONING_PROFILE_ID}"
+        shell: bash
 
       - name: Build and Distribute App to TestFlight
         uses: maierj/fastlane-action@v1.4.0
