@@ -6,6 +6,8 @@ storage_mode("git")
 type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
 
 username(ENV["FASTLANE_USER"]) #Apple Developer account email
+keychain_name("login.keychain-db")
+keychain_password(ENV["KEYCHAIN_PASSWORD"])
 
 # For all available options run `fastlane match --help`
 # Remove the # in the beginning of the line to enable the other options
