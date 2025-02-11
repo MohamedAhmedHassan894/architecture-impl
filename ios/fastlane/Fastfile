@@ -1,32 +1,100 @@
-# Fastlane configuration for IOS deployment
+# Fastlane Configuration for iOS Deployment
 
 default_platform(:ios)
+
+# Environment variables for iOS deployment
+DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"] # Developer App ID
+DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"] # App Identifier
+MATCH_PASSWORD = ENV["MATCH_PASSWORD"] # Password for Match repository
+PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"] # Provisioning profile specifier
+TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"] # Temporary keychain user
+TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"] # Temporary keychain password
+APPLE_ISSUER_ID = ENV["ASC_ISSUER_ID"] # App Store Connect Issuer ID
+APPLE_KEY_ID = ENV["ASC_KEY_ID"] # App Store Connect API Key ID
+APPLE_KEY_CONTENT = ENV["ASC_KEY"] # App Store Connect API Key Content (Base64 Encoded)
+MATCH_GIT_BASIC_AUTHORIZATION = ENV["MATCH_GIT_BASIC_AUTHORIZATION"] # Authorization for Git-based Match
+PROVISIONING_PROFILE_ID = ENV["PROVISIONING_PROFILE_ID"] # Provisioning Profile ID
+
+# Function to delete the temporary keychain if it exists
+def delete_temp_keychain(name)
+  delete_keychain(
+    name: name
+  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
+end
+
+# Function to create a temporary keychain
+def create_temp_keychain(name, password)
+  create_keychain(
+    name: name,
+    password: password,
+    unlock: false,
+    timeout: 0
+  )
+end
+
+# Ensure a fresh temporary keychain is created
+def ensure_temp_keychain(name, password)
+  delete_temp_keychain(name)
+  create_temp_keychain(name, password)
+end
 
 platform :ios do
 
   desc "Build and distribute a new Beta build to TestFlight"
   lane :testflight_distribution do
 
-    # Step 1: Match AppStore through repository contains all certificates and provisioning profiles needed to build and sign the app
-    match(type: "appstore", app_identifier: "com.example.architectureImpl",readonly: true)
+    keychain_name = TEMP_KEYCHAIN_USER
+    keychain_password = TEMP_KEYCHAIN_PASSWORD
+    output_name = "example"
+    workspace = "example.xcworkspace"
     
-    # Step 2: Increment build number (optional)
+    # Ensure a temporary keychain is created
+    ensure_temp_keychain(keychain_name, keychain_password)
+
+    # Generate App Store Connect API Key (For Authorization to apple developr account)
+    api_key = app_store_connect_api_key(
+      key_id: APPLE_KEY_ID,
+      issuer_id: APPLE_ISSUER_ID,
+      key_content: APPLE_KEY_CONTENT,
+      is_key_content_base64: true,
+      duration: 1200,
+      in_house: false
+    )
+
+    # Increment build number based on the latest TestFlight build number
     increment_build_number(
       build_number: latest_testflight_build_number + 1
     )
 
-   # Step 3: Build the Flutter iOS app (we need before reaching to this point to install cocoapods in the CI provider to run pod install)
+    # Install CocoaPods dependencies
+    cocoapods(
+      clean_install: true
+    )
+
+    # Match provisioning profiles using Git repository
+    match(
+      type: "appstore",
+      app_identifier: "com.example.architectureImpl",
+      readonly: true,
+      keychain_name: keychain_name,
+      keychain_password: keychain_password,
+      api_key: api_key
+    )
+    
+    # Build the Flutter iOS app
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      export_method: "app-store"
+      export_method: "app-store", # Export method: app-store, ad-hoc, etc.
+      export_options: {
+        provisioningProfiles: { 
+          DEVELOPER_APP_ID => PROVISIONING_PROFILE_SPECIFIER,
+          DEVELOPER_APP_IDENTIFIER => PROVISIONING_PROFILE_ID
+        }
+      }
     )
 
-    # Step 4: Upload to TestFlight using App-Specific Password
-    upload_to_testflight(
-      skip_waiting_for_build_processing: false, # Set to false if you want to wait for processing
-      changelog: "Beta release for testing",   # Add your release notes here
-      distribute_external: false               # Set to true if you want to distribute to external testers
-    )
+    # Delete the temporary keychain after build completion
+    delete_temp_keychain(keychain_name)
   end
 end
