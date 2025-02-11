@@ -59,7 +59,7 @@ jobs:
           bundle install
 
       - name: Build and Distribute App to TestFlight
-        uses: maierj/fastlane-action@v1.4.0
+      
         env:
           DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
