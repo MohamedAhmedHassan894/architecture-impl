@@ -4,46 +4,40 @@ on:
   push:
     branches:
       - development
-
     pull_request:
       - development
 
 jobs:
   distribute_to_testflight:
     runs-on: macos-latest
+    env: # ✅ Define environment variables at the job level
+      DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
+      DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+      DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+      FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
+      FASTLANE_ITC_TEAM_ID: ${{ secrets.FASTLANE_ITC_TEAM_ID }}
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+      PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
+      PROVISIONING_PROFILE_ID: '${{ secrets.PROVISIONING_PROFILE_ID }}'
+      TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
+      TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
+      ASC_KEY_ID: '${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}'
+      ASC_ISSUER_ID: '${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}'
+      ASC_KEY: '${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}'
+      SIGNING_KEY_PASSWORD: '${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}'
+      SIGNING_KEY_FILE_PATH: 'signing-cert.p12'
+      FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+      FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+      FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
+      ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
+      TEAM_ID: ${{ secrets.TEAM_ID }}
+
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Set up SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-          eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_ed25519
-
-      - name: Debug Match Repository Access
-        run: |
-          echo "MATCH_GIT_BASIC_AUTHORIZATION: $MATCH_GIT_BASIC_AUTHORIZATION" 
-          git clone https://$MATCH_GIT_BASIC_AUTHORIZATION@github.com/MohamedAhmedHassan894/fastlane.git
-          ls -la fastlane
-
-      - name: Set up Keychain
-        run: |
-         
-          KEYCHAIN_PASSWORD="${{ secrets.KEYCHAIN_PASSWORD }}"
-
-          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-          security list-keychains -s "$KEYCHAIN_NAME"
-          security default-keychain -s "$KEYCHAIN_NAME"
-          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_NAME"
-          security set-keychain-settings -t 3600 -u "$KEYCHAIN_NAME"
-
-          echo "Keychain setup complete."
-
-          
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -59,23 +53,19 @@ jobs:
 
       - name: Install Flutter SDK (Project Version)
         run: |
-          # Read the Flutter version from .fvm/fvm_config.json
           FLUTTER_VERSION=$(cat .fvm/fvm_config.json | grep flutterSdkVersion | cut -d '"' -f 4)
           echo "Using Flutter version: $FLUTTER_VERSION"
-
-          # Install the Flutter version specified in the project
           fvm install $FLUTTER_VERSION
           fvm use $FLUTTER_VERSION --force
-      # Ensures that the project uses the correct Flutter SDK version specified in the configuration file
 
       - name: Print Flutter SDK version
         run: fvm flutter --version
 
       - name: Decode signing certificate into a file
-        env:
-          CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
         run: |
           echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
 
       - name: Install CocoaPods dependencies
         run: |
@@ -87,48 +77,41 @@ jobs:
         run: |
           cd ios
           bundle install
-          
-      - name: Debug Environment Variables
+
+      - name: Echo environment variables (Debugging)
         run: |
-          echo "FASTLANE_USER: $FASTLANE_USER"
-          echo "FASTLANE_PASSWORD: $FASTLANE_PASSWORD"
-          echo "FASTLANE_SESSION: $FASTLANE_SESSION"
-          echo "ITC_TEAM_ID: $ITC_TEAM_ID"
-          echo "TEAM_ID: $TEAM_ID"
+          echo "DEVELOPER_APP_ID=${DEVELOPER_APP_ID}"
+          echo "DEVELOPER_APP_IDENTIFIER=${DEVELOPER_APP_IDENTIFIER}"
+          echo "DEVELOPER_PORTAL_TEAM_ID=${DEVELOPER_PORTAL_TEAM_ID}"
+          echo "FASTLANE_APPLE_ID=${FASTLANE_APPLE_ID}"
+          echo "FASTLANE_ITC_TEAM_ID=${FASTLANE_ITC_TEAM_ID}"
+          echo "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=******"
+          echo "MATCH_PASSWORD=******"
+          echo "MATCH_GIT_BASIC_AUTHORIZATION=******"
+          echo "PROVISIONING_PROFILE_SPECIFIER=${PROVISIONING_PROFILE_SPECIFIER}"
+          echo "PROVISIONING_PROFILE_ID=${PROVISIONING_PROFILE_ID}"
+          echo "TEMP_KEYCHAIN_PASSWORD=******"
+          echo "TEMP_KEYCHAIN_USER=${TEMP_KEYCHAIN_USER}"
+          echo "ASC_KEY_ID=${ASC_KEY_ID}"
+          echo "ASC_ISSUER_ID=${ASC_ISSUER_ID}"
+          echo "ASC_KEY=******"
+          echo "SIGNING_KEY_PASSWORD=******"
+          echo "SIGNING_KEY_FILE_PATH=${SIGNING_KEY_FILE_PATH}"
+          echo "FASTLANE_USER=${FASTLANE_USER}"
+          echo "FASTLANE_PASSWORD=******"
+          echo "FASTLANE_SESSION=******"
+          echo "ITC_TEAM_ID=${ITC_TEAM_ID}"
+          echo "TEAM_ID=${TEAM_ID}"
 
       - name: Build and Distribute App to TestFlight
-        uses: maierj/fastlane-action@v1.4.0
-        with:
-          lane: bundle exec fastlane ios testflight_distribution
-        env:
-          DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
-          DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
-          DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
-          FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
-          FASTLANE_ITC_TEAM_ID: ${{ secrets.FASTLANE_ITC_TEAM_ID }}
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
-          PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
-          PROVISIONING_PROFILE_ID: '${{ secrets.PROVISIONING_PROFILE_ID }}'
-          TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
-          TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
-          ASC_KEY_ID: '${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}'
-          ASC_ISSUER_ID: '${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}'
-          ASC_KEY: '${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}'
-          SIGNING_KEY_PASSWORD: '${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}'
-          SIGNING_KEY_FILE_PATH: 'signing-cert.p12'
-          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-          FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
-          ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
-          TEAM_ID: ${{ secrets.TEAM_ID }}
-          
+        run: |
+          cd ios
+          bundle exec fastlane ios testflight_distribution
+
       - name: Upload app-store ipa and dsyms to artifacts
         uses: actions/upload-artifact@v4
         with:
-         name: app-store ipa & dsyms
-         path: |
-           ${{ github.workspace }}/example.ipa
-           ${{ github.workspace }}/*example.app.dSYM.zip
-
+          name: app-store ipa & dsyms
+          path: |
+            ${{ github.workspace }}/example.ipa
+            ${{ github.workspace }}/*example.app.dSYM.zip
