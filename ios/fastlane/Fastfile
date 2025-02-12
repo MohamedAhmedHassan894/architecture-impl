@@ -44,8 +44,7 @@ platform :ios do
     output_name = "example"
     workspace = "example.xcworkspace"
     
-    # Ensure a temporary keychain is created
-    ensure_temp_keychain(keychain_name, keychain_password)
+   
 
     # Generate App Store Connect API Key (For Authorization to apple developr account)
     api_key = app_store_connect_api_key(
