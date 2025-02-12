@@ -1,3 +1,9 @@
+name: IOS Fastlane with TestFlight
+
+on:
+  push:
+    branches:
+      - development
 jobs:
   build:
     runs-on: macos-latest
