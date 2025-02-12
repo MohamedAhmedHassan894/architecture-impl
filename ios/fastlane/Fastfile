@@ -2,18 +2,17 @@
 
 default_platform(:ios)
 
-# Environment variables for iOS deployment
-DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"] # Developer App ID
-DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"] # App Identifier
-MATCH_PASSWORD = ENV["MATCH_PASSWORD"] # Password for Match repository
-PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"] # Provisioning profile specifier
+APPLE_DEV_EMAIL = ENV["DEVELOPER_APP_ID"] # Apple Developer Account Email
+APP_BUNDLE_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"] # App Bundle Identifier
+MATCH_PASSWORD = ENV["MATCH_PASSWORD"] # Match repository password
+PROVISIONING_PROFILE_NAME = ENV["PROVISIONING_PROFILE_SPECIFIER"] # Provisioning Profile Name
+PROVISIONING_PROFILE_UUID = ENV["PROVISIONING_PROFILE_ID"] # Provisioning Profile UUID
 TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"] # Temporary keychain user
 TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"] # Temporary keychain password
 APPLE_ISSUER_ID = ENV["ASC_ISSUER_ID"] # App Store Connect Issuer ID
 APPLE_KEY_ID = ENV["ASC_KEY_ID"] # App Store Connect API Key ID
 APPLE_KEY_CONTENT = ENV["ASC_KEY"] # App Store Connect API Key Content (Base64 Encoded)
-MATCH_GIT_BASIC_AUTHORIZATION = ENV["MATCH_GIT_BASIC_AUTHORIZATION"] # Authorization for Git-based Match
-PROVISIONING_PROFILE_ID = ENV["PROVISIONING_PROFILE_ID"] # Provisioning Profile ID
+
 
 # Function to delete the temporary keychain if it exists
 def delete_temp_keychain(name)
@@ -66,30 +65,23 @@ platform :ios do
       build_number: latest_testflight_build_number + 1
     )
 
-    # Install CocoaPods dependencies
-    cocoapods(
-      clean_install: true
-    )
-
     # Match provisioning profiles using Git repository
     match(
-      type: "appstore",
-      app_identifier: "com.example.architectureImpl",
+      app_identifier: APP_BUNDLE_IDENTIFIER, # Use the correct App Bundle Identifier
       readonly: true,
       keychain_name: keychain_name,
       keychain_password: keychain_password,
       api_key: api_key
     )
-    
+
     # Build the Flutter iOS app
     build_app(
       workspace: "Runner.xcworkspace",
       scheme: "Runner",
-      export_method: "app-store", # Export method: app-store, ad-hoc, etc.
+      export_method: "app-store",
       export_options: {
         provisioningProfiles: { 
-          DEVELOPER_APP_ID => PROVISIONING_PROFILE_SPECIFIER,
-          DEVELOPER_APP_IDENTIFIER => PROVISIONING_PROFILE_ID
+          APP_BUNDLE_IDENTIFIER => PROVISIONING_PROFILE_NAME
         }
       }
     )
@@ -97,9 +89,10 @@ platform :ios do
     # Delete the temporary keychain after build completion
     delete_temp_keychain(keychain_name)
 
+    # Alias for the upload_to_testflight action
     pilot(
-      apple_id: "#{DEVELOPER_APP_ID}",
-      app_identifier: "#{DEVELOPER_APP_IDENTIFIER}",
+      apple_id: "#{APPLE_DEV_EMAIL}", # Apple Developer Email (Used for authentication)
+      app_identifier: "#{APP_BUNDLE_IDENTIFIER}", # App Bundle Identifier (Used for uploading the app)
       skip_waiting_for_build_processing: true,
       skip_submission: true,
       distribute_external: false,
