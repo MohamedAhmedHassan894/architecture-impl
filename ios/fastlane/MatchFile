@@ -1,5 +1,4 @@
 git_url("git@github.com:MohamedAhmedHassan894/fastlane.git")
-git_basic_authorization(ENV["MATCH_GIT_BASIC_AUTHORIZATION"]) #GitHub Personal Access Token or an encoded username/password (base64)
 
 storage_mode("git")
 
