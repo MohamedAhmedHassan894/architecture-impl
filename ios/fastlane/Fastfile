@@ -7,44 +7,17 @@ DEVELOPER_APP_ID = ENV["DEVELOPER_APP_ID"] # Developer App ID
 DEVELOPER_APP_IDENTIFIER = ENV["DEVELOPER_APP_IDENTIFIER"] # App Identifier
 MATCH_PASSWORD = ENV["MATCH_PASSWORD"] # Password for Match repository
 PROVISIONING_PROFILE_SPECIFIER = ENV["PROVISIONING_PROFILE_SPECIFIER"] # Provisioning profile specifier
-TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"] # Temporary keychain user
-TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"] # Temporary keychain password
 APPLE_ISSUER_ID = ENV["ASC_ISSUER_ID"] # App Store Connect Issuer ID
 APPLE_KEY_ID = ENV["ASC_KEY_ID"] # App Store Connect API Key ID
 APPLE_KEY_CONTENT = ENV["ASC_KEY"] # App Store Connect API Key Content (Base64 Encoded)
 MATCH_GIT_BASIC_AUTHORIZATION = ENV["MATCH_GIT_BASIC_AUTHORIZATION"] # Authorization for Git-based Match
 PROVISIONING_PROFILE_ID = ENV["PROVISIONING_PROFILE_ID"] # Provisioning Profile ID
 
-# Function to delete the temporary keychain if it exists
-def delete_temp_keychain(name)
-  delete_keychain(
-    name: name
-  ) if File.exist? File.expand_path("~/Library/Keychains/#{name}-db")
-end
-
-# Function to create a temporary keychain
-def create_temp_keychain(name, password)
-  create_keychain(
-    name: name,
-    password: password,
-    unlock: false,
-    timeout: 0
-  )
-end
-
-
 
 platform :ios do
 
   desc "Build and distribute a new Beta build to TestFlight"
   lane :testflight_distribution do
-
-    keychain_name = TEMP_KEYCHAIN_USER
-    keychain_password = TEMP_KEYCHAIN_PASSWORD
-    output_name = "example"
-    workspace = "example.xcworkspace"
-    
-   
 
     # Generate App Store Connect API Key (For Authorization to apple developr account)
     api_key = app_store_connect_api_key(
@@ -87,9 +60,6 @@ platform :ios do
         }
       }
     )
-
-    # Delete the temporary keychain after build completion
-    delete_temp_keychain(keychain_name)
 
     pilot(
       apple_id: "#{DEVELOPER_APP_ID}",
