@@ -1,117 +1,23 @@
-name: IOS Fastlane with TestFlight
-
-on:
-  push:
-    branches:
-      - development
-    pull_request:
-      - development
-
 jobs:
-  distribute_to_testflight:
+  build:
     runs-on: macos-latest
-    env: # ✅ Define environment variables at the job level
-      DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
-      DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
-      DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
-      FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
-      FASTLANE_ITC_TEAM_ID: ${{ secrets.FASTLANE_ITC_TEAM_ID }}
-      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
-      PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
-      PROVISIONING_PROFILE_ID: '${{ secrets.PROVISIONING_PROFILE_ID }}'
-      TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
-      TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
-      ASC_KEY_ID: '${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}'
-      ASC_ISSUER_ID: '${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}'
-      ASC_KEY: '${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}'
-      SIGNING_KEY_PASSWORD: '${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}'
-      SIGNING_KEY_FILE_PATH: 'signing-cert.p12'
-      FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-      FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-      FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
-      ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
-      TEAM_ID: ${{ secrets.TEAM_ID }}
-
     steps:
-      - name: Checkout the code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3.4"
-          bundler-cache: true
-          working-directory: ios
-
-      - name: Set up Xcode
-        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-
-      - name: Setup Flutter Version Management CLI (FVM)
-        uses: flutter-actions/setup-fvm@v1
-
-      - name: Install Flutter SDK (Project Version)
+      - name: Setup SSH
         run: |
-          FLUTTER_VERSION=$(cat .fvm/fvm_config.json | grep flutterSdkVersion | cut -d '"' -f 4)
-          echo "Using Flutter version: $FLUTTER_VERSION"
-          fvm install $FLUTTER_VERSION
-          fvm use $FLUTTER_VERSION --force
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-      - name: Print Flutter SDK version
-        run: fvm flutter --version
-
-      - name: Decode signing certificate into a file
+      - name: Clone Certificates Repo (Test)
         run: |
-          echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
-        env:
-          CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
+          git clone git@github.com:MohamedAhmedHassan894/fastlane.git ~/fastlane
 
-      - name: Install CocoaPods dependencies
-        run: |
-          fvm flutter precache --ios
-          cd ios
-          pod install
+      - name: Install Dependencies
+        run: bundle install
 
-      - name: Install Fastlane dependencies
-        run: |
-          cd ios
-          bundle install
-
-      - name: Echo environment variables (Debugging)
-        run: |
-          echo "DEVELOPER_APP_ID=${DEVELOPER_APP_ID}"
-          echo "DEVELOPER_APP_IDENTIFIER=${DEVELOPER_APP_IDENTIFIER}"
-          echo "DEVELOPER_PORTAL_TEAM_ID=${DEVELOPER_PORTAL_TEAM_ID}"
-          echo "FASTLANE_APPLE_ID=${FASTLANE_APPLE_ID}"
-          echo "FASTLANE_ITC_TEAM_ID=${FASTLANE_ITC_TEAM_ID}"
-          echo "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD=******"
-          echo "MATCH_PASSWORD=******"
-          echo "MATCH_GIT_BASIC_AUTHORIZATION=******"
-          echo "PROVISIONING_PROFILE_SPECIFIER=${PROVISIONING_PROFILE_SPECIFIER}"
-          echo "PROVISIONING_PROFILE_ID=${PROVISIONING_PROFILE_ID}"
-          echo "TEMP_KEYCHAIN_PASSWORD=******"
-          echo "TEMP_KEYCHAIN_USER=${TEMP_KEYCHAIN_USER}"
-          echo "ASC_KEY_ID=${ASC_KEY_ID}"
-          echo "ASC_ISSUER_ID=${ASC_ISSUER_ID}"
-          echo "ASC_KEY=******"
-          echo "SIGNING_KEY_PASSWORD=******"
-          echo "SIGNING_KEY_FILE_PATH=${SIGNING_KEY_FILE_PATH}"
-          echo "FASTLANE_USER=${FASTLANE_USER}"
-          echo "FASTLANE_PASSWORD=******"
-          echo "FASTLANE_SESSION=******"
-          echo "ITC_TEAM_ID=${ITC_TEAM_ID}"
-          echo "TEAM_ID=${TEAM_ID}"
-
-      - name: Build and Distribute App to TestFlight
-        run: |
-          cd ios
-          bundle exec fastlane ios testflight_distribution
-
-      - name: Upload app-store ipa and dsyms to artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-store ipa & dsyms
-          path: |
-            ${{ github.workspace }}/example.ipa
-            ${{ github.workspace }}/*example.app.dSYM.zip
+      - name: Run Fastlane Match
+        run: bundle exec fastlane match appstore
