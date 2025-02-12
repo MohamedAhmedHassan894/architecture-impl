@@ -3,7 +3,7 @@ name: IOS Fastlane with TestFlight
 on:
   push:
     branches:
-      - development
+      - feature/ci-cd_github-actions
     pull_request:
       - development
 
