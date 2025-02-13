@@ -3,7 +3,7 @@ name: IOS Fastlane with TestFlight
 on:
   push:
     branches:
-      - feature/ci-cd_github-actions
+      - development
     pull_request:
       - development
 
@@ -44,12 +44,6 @@ jobs:
 
       - name: Print Flutter SDK version
         run: fvm flutter --version
-
-      - name: Decode signing certificate into a file
-        run: |
-          echo $CERTIFICATE_BASE64 | base64 --decode > signing-cert.p12
-        env:
-          CERTIFICATE_BASE64: ${{ secrets.IOS_DIST_SIGNING_KEY }}
 
       - name: Install CocoaPods & Fastlane dependencies
         run: |
