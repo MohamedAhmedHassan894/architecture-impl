@@ -5,57 +5,52 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="00: default_platform" time="0.000583">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000432">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="01: delete_keychain" time="0.027139">
+      <testcase classname="fastlane.lanes" name="1: delete_keychain" time="0.01468">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="02: create_keychain" time="0.085291">
+      <testcase classname="fastlane.lanes" name="2: create_keychain" time="0.04862">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="03: app_store_connect_api_key" time="0.00371">
+      <testcase classname="fastlane.lanes" name="3: app_store_connect_api_key" time="0.002377">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="04: latest_testflight_build_number" time="1.589229">
+      <testcase classname="fastlane.lanes" name="4: latest_testflight_build_number" time="1.826163">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="05: increment_build_number" time="0.268074">
+      <testcase classname="fastlane.lanes" name="5: increment_build_number" time="0.180525">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="06: cocoapods" time="3.263532">
+      <testcase classname="fastlane.lanes" name="6: match" time="4.534709">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="07: match" time="5.037831">
+      <testcase classname="fastlane.lanes" name="7: build_app" time="85.057662">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="08: build_app" time="161.931908">
+      <testcase classname="fastlane.lanes" name="8: delete_keychain" time="0.013022">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="09: delete_keychain" time="0.02403">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="10: pilot" time="293.515044">
+      <testcase classname="fastlane.lanes" name="9: pilot" time="346.702719">
         
       </testcase>
     
