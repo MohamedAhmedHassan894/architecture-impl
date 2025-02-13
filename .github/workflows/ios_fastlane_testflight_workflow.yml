@@ -10,6 +10,7 @@ on:
 jobs:
   distribute_to_testflight:
     runs-on: macos-latest
+    
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
@@ -69,6 +70,8 @@ jobs:
           FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
           FASTLANE_ITC_TEAM_ID: ${{ secrets.FASTLANE_ITC_TEAM_ID }}
           DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+          PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}' #Used in build_app Action
+
         run: |
           cd ios
           bundle exec fastlane ios testflight_distribution
