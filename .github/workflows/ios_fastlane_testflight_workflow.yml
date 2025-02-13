@@ -12,7 +12,6 @@ jobs:
     runs-on: macos-latest
     env: 
      
-     # MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
     #  MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
       PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
       PROVISIONING_PROFILE_ID: '${{ secrets.PROVISIONING_PROFILE_ID }}'
@@ -79,6 +78,7 @@ jobs:
           ASC_KEY_ID: '${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}'
           ASC_ISSUER_ID: '${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}'
           ASC_KEY: '${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}'
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
           FASTLANE_ITC_TEAM_ID: ${{ secrets.FASTLANE_ITC_TEAM_ID }}
