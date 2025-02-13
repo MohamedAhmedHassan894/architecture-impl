@@ -10,20 +10,6 @@ on:
 jobs:
   distribute_to_testflight:
     runs-on: macos-latest
-    env: 
-     
-    #  MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
-      PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}'
-      PROVISIONING_PROFILE_ID: '${{ secrets.PROVISIONING_PROFILE_ID }}'
-     
-      SIGNING_KEY_PASSWORD: '${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}'
-      SIGNING_KEY_FILE_PATH: 'signing-cert.p12'
-      FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-      FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-      FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
-      ITC_TEAM_ID: ${{ secrets.ITC_TEAM_ID }}
-      TEAM_ID: ${{ secrets.TEAM_ID }}
-
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
