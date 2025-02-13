@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "19992269668",
+    "project_id": "architecture-impl",
+    "storage_bucket": "architecture-impl.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19992269668:android:d0423610bf518b330ae071",
+        "android_client_info": {
+          "package_name": "com.example.architecture_impl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrAawsPvglx-Mp09zG620jEMq7SdAZYqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

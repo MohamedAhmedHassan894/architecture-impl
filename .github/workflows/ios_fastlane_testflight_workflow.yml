@@ -1,0 +1,71 @@
+name: IOS Fastlane with TestFlight
+
+on:
+  push:
+    branches:
+      - development
+    pull_request:
+      - development
+
+jobs:
+  distribute_to_testflight:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH for Match
+        run: |
+          mkdir -p ~/.ssh
+          echo -e "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.4"
+          bundler-cache: true
+          working-directory: ios
+
+      - name: Set up Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Setup Flutter Version Management CLI (FVM)
+        uses: flutter-actions/setup-fvm@v1
+
+      - name: Install Flutter SDK (Project Version)
+        run: |
+          FLUTTER_VERSION=$(cat .fvm/fvm_config.json | grep flutterSdkVersion | cut -d '"' -f 4)
+          echo "Using Flutter version: $FLUTTER_VERSION"
+          fvm install $FLUTTER_VERSION
+          fvm use $FLUTTER_VERSION --force
+
+      - name: Print Flutter SDK version
+        run: fvm flutter --version
+
+      - name: Install CocoaPods & Fastlane dependencies
+        run: |
+          fvm flutter precache --ios
+          cd ios
+          pod install
+          bundle install
+
+      - name: Build and Distribute App to TestFlight
+        env:
+          TEMP_KEYCHAIN_USER: '${{ secrets.TEMP_KEYCHAIN_USER }}'
+          TEMP_KEYCHAIN_PASSWORD: '${{ secrets.TEMP_KEYCHAIN_PASSWORD }}'
+          ASC_KEY_ID: '${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}'
+          ASC_ISSUER_ID: '${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}'
+          ASC_KEY: '${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}'
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          FASTLANE_APPLE_ID: ${{ secrets.FASTLANE_APPLE_ID }}
+          FASTLANE_ITC_TEAM_ID: ${{ secrets.FASTLANE_ITC_TEAM_ID }}
+          DEVELOPER_PORTAL_TEAM_ID: ${{ secrets.DEVELOPER_PORTAL_TEAM_ID }}
+          PROVISIONING_PROFILE_SPECIFIER: '${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}' #Used in build_app Action
+
+        run: |
+          cd ios
+          bundle exec fastlane ios testflight_distribution

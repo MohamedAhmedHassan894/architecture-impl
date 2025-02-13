@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000432">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: delete_keychain" time="0.01468">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: create_keychain" time="0.04862">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: app_store_connect_api_key" time="0.002377">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: latest_testflight_build_number" time="1.826163">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: increment_build_number" time="0.180525">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: match" time="4.534709">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: build_app" time="85.057662">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="8: delete_keychain" time="0.013022">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="9: pilot" time="346.702719">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

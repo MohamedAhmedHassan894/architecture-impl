@@ -1,0 +1,7 @@
+git_url("git@github.com:MohamedAhmedHassan894/fastlane.git")
+
+storage_mode("git")
+
+type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
+
+username(ENV["DEVELOPER_APP_ID"]) #Apple Developer account email
