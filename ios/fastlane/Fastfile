@@ -14,6 +14,9 @@ APPLE_KEY_ID = ENV["ASC_KEY_ID"] # App Store Connect API Key ID
 APPLE_KEY_CONTENT = ENV["ASC_KEY"] # App Store Connect API Key Content (Base64 Encoded)
 
 
+MATCH_GIT_BASIC_AUTHORIZATION = ENV["MATCH_GIT_BASIC_AUTHORIZATION"] # Authorization for Git-based Match
+PROVISIONING_PROFILE_ID = ENV["PROVISIONING_PROFILE_ID"] # Provisioning Profile ID
+
 # Function to delete the temporary keychain if it exists
 def delete_temp_keychain(name)
   delete_keychain(
@@ -81,7 +84,8 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: { 
-          APP_BUNDLE_IDENTIFIER => PROVISIONING_PROFILE_NAME
+          APP_BUNDLE_IDENTIFIER => PROVISIONING_PROFILE_NAME,
+          DEVELOPER_APP_IDENTIFIER => PROVISIONING_PROFILE_ID
         }
       }
     )

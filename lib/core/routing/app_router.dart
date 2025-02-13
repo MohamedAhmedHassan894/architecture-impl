@@ -22,6 +22,7 @@ class AppRouter {
           builder: (_) => const OnboardingScreen(),
         );
       case Routes.loginScreen:
+
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => getIt<LoginCubit>(),
@@ -36,7 +37,7 @@ class AppRouter {
           ),
         );
       case Routes.interviewsScreen:
-        final d = InterviewsCubit(getIt()); ;
+        final d = InterviewsCubit(getIt());
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) =>
