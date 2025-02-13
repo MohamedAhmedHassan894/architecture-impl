@@ -4,8 +4,8 @@ default_platform(:ios)
 
 TEMP_KEYCHAIN_USER = ENV["TEMP_KEYCHAIN_USER"] # Temporary keychain user
 TEMP_KEYCHAIN_PASSWORD = ENV["TEMP_KEYCHAIN_PASSWORD"] # Temporary keychain password
-APPLE_ISSUER_ID = ENV["ASC_ISSUER_ID"] # App Store Connect Issuer ID
 APPLE_KEY_ID = ENV["ASC_KEY_ID"] # App Store Connect API Key ID
+APPLE_ISSUER_ID = ENV["ASC_ISSUER_ID"] # App Store Connect Issuer ID
 APPLE_KEY_CONTENT = ENV["ASC_KEY"] # App Store Connect API Key Content (Base64 Encoded)
 
 
