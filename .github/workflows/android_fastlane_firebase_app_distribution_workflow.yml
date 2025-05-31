@@ -18,6 +18,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin' # Uses the Temurin distribution of Java, which is widely used
 
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install FVM
+        run: dart pub global activate fvm
+
       - name: Setup Flutter Version Management CLI (FVM)
         uses: flutter-actions/setup-fvm@v1
 
