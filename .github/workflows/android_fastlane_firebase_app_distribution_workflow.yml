@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - development # Trigger deployment when pushing to the development branch
-
 jobs:
   distribute_to_firebase:
     runs-on: ubuntu-latest # Use the latest version of Ubuntu for the build environment
