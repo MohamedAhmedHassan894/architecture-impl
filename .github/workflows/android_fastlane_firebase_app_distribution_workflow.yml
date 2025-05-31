@@ -24,9 +24,6 @@ jobs:
       - name: Install FVM
         run: dart pub global activate fvm
 
-      - name: Setup Flutter Version Management CLI (FVM)
-        uses: flutter-actions/setup-fvm@v1
-
       - name: Install Flutter SDK (Project Version)
         run: |
           # Read the Flutter version from .fvm/fvm_config.json
