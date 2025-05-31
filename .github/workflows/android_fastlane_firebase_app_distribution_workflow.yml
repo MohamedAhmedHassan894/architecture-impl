@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - development # Trigger deployment when pushing to the development branch
-
 jobs:
   distribute_to_firebase:
     runs-on: ubuntu-latest # Use the latest version of Ubuntu for the build environment
@@ -19,8 +18,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin' # Uses the Temurin distribution of Java, which is widely used
 
-      - name: Setup Flutter Version Management CLI (FVM)
-        uses: flutter-actions/setup-fvm@v1
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install FVM
+        run: dart pub global activate fvm
 
       - name: Install Flutter SDK (Project Version)
         run: |
